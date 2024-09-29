@@ -1,0 +1,33 @@
+ss-permission: "easyss.ss"
+
+# Misc #
+blindness: true
+teleport-away: true # Will teleport the player in the air then teleport them back when unfrozen
+
+time-limit: 180 # in seconds
+discord-invite: "https://discord.gg/123456"
+
+# Title #
+title: "&c⚠&f You have been frozen &c⚠"
+subtitle: "Check chat for further instructions"
+
+# Punishments #
+on-leave:
+  enabled: true
+  command: "ban %player% 15d evading SS"
+
+on-time-limit:
+  enabled: true
+  command: "ban %player% 15d evading SS"
+
+# Messages #
+frozen-chat-messages: # NOTE: you cannot place %discord% and %time_left% in the same line
+  - ""
+  - "&c⚠ You have been frozen ⚠"
+  - "&cYou have &e%time_left%&c seconds left to join the SS voice channel"
+  - "&cin the &f%discord%"
+  - "&cTo join the discord either click the discord text above or join manually: .gg/123456"
+  - ""
+no-permission: "&cYou do not have permission to use this"
+incorrect-usage: "&cIncorrect usage | /ss <player>"
+player-not-found: "&cThat player does not exist or is not online"
