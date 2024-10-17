@@ -6,6 +6,7 @@ teleport-away: true # Will teleport the player in the air then teleport them bac
 
 time-limit: 180 # in seconds
 discord-invite: "https://discord.gg/123456"
+discord-text-colour: "&e"
 
 # Title #
 title: "&c⚠&f You have been frozen &c⚠"

@@ -2,41 +2,50 @@ package com.boggy.easySS;
 
 import com.boggy.easySS.command.PauseSsCommand;
 import com.boggy.easySS.command.SsCommand;
-import com.boggy.easySS.listener.MoveListener;
 import com.boggy.easySS.listener.ConnectionListener;
 import com.boggy.easySS.manager.FrozenPlayerManager;
+import com.boggy.easySS.manager.MovementManager;
 import com.boggy.easySS.manager.PunishmentManager;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class EasySS extends JavaPlugin {
-    private FrozenPlayerManager frozenPlayerManager;
-    private PunishmentManager punishmentManager;
+	public static EasySS instance;
+	private FrozenPlayerManager frozenPlayerManager;
+	private PunishmentManager punishmentManager;
+	private MovementManager movementManager;
 
-    @Override
-    public void onEnable() {
-        saveDefaultConfig();
+	@Override
+	public void onEnable() {
+		instance = this;
 
-        frozenPlayerManager = new FrozenPlayerManager(this);
-        punishmentManager = new PunishmentManager(this);
+		saveDefaultConfig();
 
-        getCommand("ss").setExecutor(new SsCommand(this));
-        getCommand("pausess").setExecutor(new PauseSsCommand(this));
+		frozenPlayerManager = new FrozenPlayerManager();
+		punishmentManager = new PunishmentManager();
+		movementManager = new MovementManager();
 
-        Bukkit.getPluginManager().registerEvents(new MoveListener(this), this);
-        Bukkit.getPluginManager().registerEvents(new ConnectionListener(this), this);
-    }
+		getCommand("ss").setExecutor(new SsCommand());
+		getCommand("pausess").setExecutor(new PauseSsCommand());
 
-    @Override
-    public void onDisable() {
-        frozenPlayerManager.unFreezeAll();
-    }
+		Bukkit.getPluginManager().registerEvents(new ConnectionListener(), this);
+	}
 
-    public String getMessage(String key) {
-        return ChatColor.translateAlternateColorCodes('&', getConfig().getString(key));
-    }
+	@Override
+	public void onDisable() {
+		frozenPlayerManager.unFreezeAll();
+	}
 
-    public FrozenPlayerManager getFrozenPlayerManager() { return frozenPlayerManager; }
-    public PunishmentManager getPunishmentManager() { return punishmentManager; }
+	public String getMessage(String key) {
+		return ChatColor.translateAlternateColorCodes('&', getConfig().getString(key));
+	}
+
+	public FrozenPlayerManager getFrozenPlayerManager() {
+		return frozenPlayerManager;
+	}
+
+	public PunishmentManager getPunishmentManager() {
+		return punishmentManager;
+	}
 }

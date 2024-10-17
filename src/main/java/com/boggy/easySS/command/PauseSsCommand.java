@@ -9,42 +9,37 @@ import org.bukkit.entity.Player;
 
 public class PauseSsCommand implements CommandExecutor {
 
-    private final EasySS plugin;
+	private final EasySS plugin = EasySS.instance;
 
-    public PauseSsCommand(EasySS plugin) {
-        this.plugin = plugin;
-    }
+	@Override
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		if (!(sender instanceof Player player)) {
+			return false;
+		}
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		if (!player.hasPermission(plugin.getConfig().getString("ss-permission"))) {
+			player.sendMessage(plugin.getMessage("no-permission"));
+			return false;
+		}
 
-        if (!(sender instanceof Player player)) {
-            return false;
-        }
+		if (args.length != 1) {
+			player.sendMessage(plugin.getMessage("incorrect-usage"));
+			return false;
+		}
 
-        if (!player.hasPermission(plugin.getConfig().getString("ss-permission"))) {
-            player.sendMessage(plugin.getMessage("no-permission"));
-            return false;
-        }
+		Player target = Bukkit.getPlayer(args[0]);
 
-        if (args.length != 1) {
-            player.sendMessage(plugin.getMessage("incorrect-usage"));
-            return false;
-        }
+		if (target == null) {
+			player.sendMessage(plugin.getMessage("player-not-found"));
+			return false;
+		}
 
-        Player target = Bukkit.getPlayer(args[0]);
+		if (plugin.getFrozenPlayerManager().isPaused(player)) {
+			plugin.getFrozenPlayerManager().unPauseFreeze(player);
+		} else {
+			plugin.getFrozenPlayerManager().pauseFreeze(player);
+		}
 
-        if (target == null) {
-            player.sendMessage(plugin.getMessage("player-not-found"));
-            return false;
-        }
-
-        if (plugin.getFrozenPlayerManager().isPaused(player)) {
-            plugin.getFrozenPlayerManager().unPauseFreeze(player);
-        } else {
-            plugin.getFrozenPlayerManager().pauseFreeze(player);
-        }
-
-        return false;
-    }
+		return false;
+	}
 }
